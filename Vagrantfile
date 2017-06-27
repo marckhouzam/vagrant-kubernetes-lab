@@ -60,7 +60,7 @@ Vagrant.configure(2) do |config|
       chmod a+x /usr/bin/kubelet
       systemctl start kubelet.service
       sleep 5
-      kubeadm init --apiserver-advertise-address 192.168.8.10 --pod-network-cidr 10.244.0.0/16 --kubernetes-version v1.6.6 --token 54c315.78a320e33baaf27d
+      kubeadm init --apiserver-advertise-address 192.168.8.10 --pod-network-cidr 10.244.0.0/16 --kubernetes-version v1.7.0-beta.2 --token 54c315.78a320e33baaf27d
       echo "export KUBERNETES_SERVICE_HOST=192.168.8.10" > /etc/profile.d/kubernetes.sh
       echo "export KUBERNETES_SERVICE_PORT=6443" >> /etc/profile.d/kubernetes.sh
       echo "export KUBECONFIG=/vagrant/kubeconfig/admin.conf" >> /etc/profile.d/kubernetes.sh
