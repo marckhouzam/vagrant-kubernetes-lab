@@ -51,15 +51,26 @@ Vagrant.configure(2) do |config|
       apt-get install -y docker.io
       apt-get install -y kubelet kubeadm kubectl kubernetes-cni
       apt-get install -y nfs-common
+      wget --no-verbose -O /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubectl
+      chmod a+x /usr/bin/kubectl
+      wget --no-verbose -O /usr/bin/kubeadm https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubeadm
+      chmod a+x /usr/bin/kubeadm
+      systemctl stop kubelet.service
+      wget --no-verbose -O /usr/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubelet
+      chmod a+x /usr/bin/kubelet
+      systemctl start kubelet.service
+      sleep 5
+      kubeadm init --apiserver-advertise-address 192.168.8.10 --pod-network-cidr 10.244.0.0/16 --kubernetes-version v1.6.6 --token 54c315.78a320e33baaf27d
       echo "export KUBERNETES_SERVICE_HOST=192.168.8.10" > /etc/profile.d/kubernetes.sh
       echo "export KUBERNETES_SERVICE_PORT=6443" >> /etc/profile.d/kubernetes.sh
       echo "export KUBECONFIG=/vagrant/kubeconfig/admin.conf" >> /etc/profile.d/kubernetes.sh
-      kubeadm init --apiserver-advertise-address 192.168.8.10 --pod-network-cidr 10.244.0.0/16 --kubernetes-version v1.6.6 --token 54c315.78a320e33baaf27d 
       cp -rf  /etc/kubernetes/admin.conf /vagrant/kubeconfig/      
       export KUBECONFIG=/etc/kubernetes/admin.conf
       kubectl patch daemonset kube-proxy -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/command/2", "value":"--proxy-mode=userspace"}]'
+      kubectl patch daemonset kube-proxy -n kube-system --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/securityContext", "value": {"privileged": true}}]'
       sleep 60
       kubectl create -f /vagrant/networking/kube-weave.yml
+      sleep 15
     SHELL
   end
 
@@ -77,10 +88,20 @@ Vagrant.configure(2) do |config|
       apt-get install -y docker.io
       apt-get install -y kubelet kubeadm kubectl kubernetes-cni
       apt-get install -y nfs-common
-      echo "export KUBERNETES_SERVICE_HOST=192.168.8.10" > /etc/profile.d/kubernetes.sh
-      echo "export KUBERNETES_SERVICE_PORT=6443" >> /etc/profile.d/kubernetes.sh
+      wget --no-verbose -O /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubectl
+      chmod a+x /usr/bin/kubectl
+      wget --no-verbose -O /usr/bin/kubeadm https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubeadm
+      chmod a+x /usr/bin/kubeadm
+      systemctl stop kubelet.service
+      wget --no-verbose -O /usr/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubelet
+      chmod a+x /usr/bin/kubelet
+      systemctl start kubelet.service
+      sleep 5
       kubeadm join --token=54c315.78a320e33baaf27d 192.168.8.10:6443
       sleep 120
+      echo "export KUBERNETES_SERVICE_HOST=192.168.8.10" > /etc/profile.d/kubernetes.sh
+      echo "export KUBERNETES_SERVICE_PORT=6443" >> /etc/profile.d/kubernetes.sh
+      echo "export KUBECONFIG=/vagrant/kubeconfig/admin.conf" >> /etc/profile.d/kubernetes.sh
       export KUBECONFIG=/vagrant/kubeconfig/admin.conf
       kubectl create -f /vagrant/monitoring/kube-heapster.yml
       kubectl create -f /vagrant/dashboard/kube-dashboard.yml
