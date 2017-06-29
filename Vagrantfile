@@ -67,7 +67,6 @@ Vagrant.configure(2) do |config|
       cp -rf  /etc/kubernetes/admin.conf /vagrant/kubeconfig/      
       export KUBECONFIG=/etc/kubernetes/admin.conf
       kubectl patch daemonset kube-proxy -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/command/2", "value":"--proxy-mode=userspace"}]'
-      kubectl patch daemonset kube-proxy -n kube-system --type='json' -p='[{"op": "replace", "path": "/spec/template/spec/containers/0/securityContext", "value": {"privileged": true}}]'
       sleep 60
       kubectl create -f /vagrant/networking/kube-weave.yml
       sleep 15
