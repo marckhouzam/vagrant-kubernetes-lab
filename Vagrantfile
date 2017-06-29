@@ -51,16 +51,16 @@ Vagrant.configure(2) do |config|
       apt-get install -y docker.io
       apt-get install -y kubelet kubeadm kubectl kubernetes-cni
       apt-get install -y nfs-common
-      wget --no-verbose -O /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubectl
+      wget --no-verbose -O /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.8.0-alpha.1/bin/linux/amd64/kubectl
       chmod a+x /usr/bin/kubectl
-      wget --no-verbose -O /usr/bin/kubeadm https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubeadm
+      wget --no-verbose -O /usr/bin/kubeadm https://storage.googleapis.com/kubernetes-release/release/v1.8.0-alpha.1/bin/linux/amd64/kubeadm
       chmod a+x /usr/bin/kubeadm
       systemctl stop kubelet.service
-      wget --no-verbose -O /usr/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubelet
+      wget --no-verbose -O /usr/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.8.0-alpha.1/bin/linux/amd64/kubelet
       chmod a+x /usr/bin/kubelet
       systemctl start kubelet.service
       sleep 5
-      kubeadm init --apiserver-advertise-address 192.168.8.10 --pod-network-cidr 10.244.0.0/16 --kubernetes-version v1.7.0-beta.2 --token 54c315.78a320e33baaf27d
+      kubeadm init --apiserver-advertise-address 192.168.8.10 --pod-network-cidr 10.244.0.0/16 --kubernetes-version v1.8.0-alpha.1 --token 54c315.78a320e33baaf27d
       echo "export KUBERNETES_SERVICE_HOST=192.168.8.10" > /etc/profile.d/kubernetes.sh
       echo "export KUBERNETES_SERVICE_PORT=6443" >> /etc/profile.d/kubernetes.sh
       echo "export KUBECONFIG=/vagrant/kubeconfig/admin.conf" >> /etc/profile.d/kubernetes.sh
@@ -88,12 +88,12 @@ Vagrant.configure(2) do |config|
       apt-get install -y docker.io
       apt-get install -y kubelet kubeadm kubectl kubernetes-cni
       apt-get install -y nfs-common
-      wget --no-verbose -O /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubectl
+      wget --no-verbose -O /usr/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.8.0-alpha.1/bin/linux/amd64/kubectl
       chmod a+x /usr/bin/kubectl
-      wget --no-verbose -O /usr/bin/kubeadm https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubeadm
+      wget --no-verbose -O /usr/bin/kubeadm https://storage.googleapis.com/kubernetes-release/release/v1.8.0-alpha.1/bin/linux/amd64/kubeadm
       chmod a+x /usr/bin/kubeadm
       systemctl stop kubelet.service
-      wget --no-verbose -O /usr/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.7.0-beta.2/bin/linux/amd64/kubelet
+      wget --no-verbose -O /usr/bin/kubelet https://storage.googleapis.com/kubernetes-release/release/v1.8.0-alpha.1/bin/linux/amd64/kubelet
       chmod a+x /usr/bin/kubelet
       systemctl start kubelet.service
       sleep 5
