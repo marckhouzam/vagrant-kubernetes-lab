@@ -79,7 +79,7 @@ Vagrant.configure(2) do |config|
       echo "export KUBERNETES_SERVICE_HOST=192.168.8.10" > /etc/profile.d/kubernetes.sh
       echo "export KUBERNETES_SERVICE_PORT=6443" >> /etc/profile.d/kubernetes.sh
       echo "export KUBECONFIG=/vagrant/kubeconfig/admin.conf" >> /etc/profile.d/kubernetes.sh
-      kubeadm init --apiserver-advertise-address 192.168.8.10 --pod-network-cidr 10.244.0.0/16 --kubernetes-version v1.7.1 --token 54c315.78a320e33baaf27d 
+      kubeadm init --apiserver-advertise-address 192.168.8.10 --pod-network-cidr 10.244.0.0/16 --token 54c315.78a320e33baaf27d
       # Rename the cluster to something simpler
       sed -i s,kubernetes-admin@kubernetes,local, /etc/kubernetes/admin.conf
       cp -rf  /etc/kubernetes/admin.conf /vagrant/kubeconfig/      
@@ -114,7 +114,7 @@ Vagrant.configure(2) do |config|
       apt-get install -y nfs-common
       echo "export KUBERNETES_SERVICE_HOST=192.168.8.10" > /etc/profile.d/kubernetes.sh
       echo "export KUBERNETES_SERVICE_PORT=6443" >> /etc/profile.d/kubernetes.sh
-      kubeadm join --skip-preflight-checks --token=54c315.78a320e33baaf27d 192.168.8.10:6443 
+      kubeadm join --ignore-preflight-errors=all --token=54c315.78a320e33baaf27d --discovery-token-unsafe-skip-ca-verification 192.168.8.10:6443
       sleep 120
       export KUBECONFIG=/vagrant/kubeconfig/admin.conf
       kubectl create -f /vagrant/monitoring/kube-heapster.yml
